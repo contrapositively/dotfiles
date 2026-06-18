@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+set -euo pipefail
+shopt -s nullglob
+
+: "${DOTFILES_CONFIG:?DOTFILES_CONFIG is not set}"
+CONFIG_DIR="$DOTFILES_CONFIG"
+INSTALL_DIR="$HOME/.config"
+
+
+out() {
+    printf "[config] %s\n" "$1"
+}
+
+usage() {
+    echo "Usage:"
+    echo "  config path"
+    echo "  config list"
+    echo "  config link [--dir DIR] <label> [label ...]"
+    echo "  config copy [--dir DIR] <label> [label ...]"
+    exit 1
+}
+
+[[ $# -ge 1 ]] || usage
+
+SUBCOMMAND="$1"
+shift
+
+case "$SUBCOMMAND" in
+    path|link|copy|list) ;;
+    *) usage ;;
+esac
+
+# --- path ---
+if [[ "$SUBCOMMAND" == "path" ]]; then
+    echo "$CONFIG_DIR"
+    exit 0
+fi
+
+# --- list ---
+if [[ "$SUBCOMMAND" == "list" ]]; then
+    for file in "$CONFIG_DIR"/*; do
+        basename "$file"
+    done
+    exit 0
+fi
+
+LABELS=()
+
+# --- Parse remaining arguments ---
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dir)
+            shift
+            [[ $# -gt 0 ]] || { out "Error: --dir requires argument" >&2; exit 1; }
+            INSTALL_DIR="$1"
+            ;;
+        *)
+            LABELS+=("$1")
+            ;;
+    esac
+    shift
+done
+
+[[ ${#LABELS[@]} -ge 1 ]] || usage
+
+mkdir -p "$INSTALL_DIR"
+
+for label in "${LABELS[@]}"; do
+    source_dir="$CONFIG_DIR/$label"
+    target_dir="$INSTALL_DIR/"
+
+    if [[ ! -e "$source_dir" ]]; then
+        continue
+    fi
+
+    for file in "$source_dir"/*; do
+        [[ -e "$file" ]] || continue
+        name="$(basename "$file")"
+        source="$source_dir/$name"
+        target="$target_dir/$name"
+        case "$SUBCOMMAND" in
+            link)
+                ln -sfn "$source" "$target"
+                ;;
+            copy)
+                cp -a "$source" "$target"
+                ;;
+        esac
+    done
+    out "$label"
+done

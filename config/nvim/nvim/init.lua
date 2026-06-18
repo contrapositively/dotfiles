@@ -1,0 +1,6 @@
+require("config.lazy")
+require("config.set")
+require("config.map")
+require("config.cmd")
+require("config.lsp")
+require("config.ft")

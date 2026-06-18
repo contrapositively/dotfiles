@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+set -euo pipefail
+shopt -s nullglob
+
+: "${DOTFILES_TEMPLATES:?DOTFILES_TEMPLATES is not set}"
+TEMPLATE_DIR="$DOTFILES_TEMPLATES"
+RUNTIME_DIR="$PWD"
+
+
+out() {
+    printf "[template] %s\n" "$1"
+}
+
+usage() {
+    echo "Usage:"
+    echo "  template path"
+    echo "  template list"
+    echo "  template link [--dir DIR] <label> [label ...]"
+    echo "  template copy [--dir DIR] <label> [label ...]"
+    exit 1
+}
+
+[[ $# -ge 1 ]] || usage
+
+SUBCOMMAND="$1"
+shift
+
+case "$SUBCOMMAND" in
+    path|link|copy|list) ;;
+    *) usage ;;
+esac
+
+# --- path ---
+if [[ "$SUBCOMMAND" == "path" ]]; then
+    echo "$TEMPLATE_DIR"
+    exit 0
+fi
+
+# --- list ---
+if [[ "$SUBCOMMAND" == "list" ]]; then
+    for file in "$TEMPLATE_DIR"/*.*; do
+        base="$(basename "$file")"
+        echo "${base%%.*}"
+    done
+    exit 0
+fi
+
+LABELS=()
+
+# --- Parse remaining arguments ---
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dir)
+            shift
+            [[ $# -gt 0 ]] || { out "Error: --dir requires argument" >&2; exit 1; }
+            RUNTIME_DIR="$1"
+            ;;
+        *)
+            LABELS+=("$1")
+            ;;
+    esac
+    shift
+done
+
+[[ ${#LABELS[@]} -ge 1 ]] || usage
+
+mkdir -p "$RUNTIME_DIR"
+
+for label in "${LABELS[@]}"; do
+    matches=( "$TEMPLATE_DIR"/"$label".* )
+
+    template="${matches[0]}"
+    base="$(basename "$template")"
+
+    # Remove "label." prefix
+    output_name="${base#"$label".}"
+    source="$TEMPLATE_DIR/$base"
+    target="${RUNTIME_DIR%/}/$output_name"
+
+    if [[ ${#matches[@]} -eq 0 ]]; then
+        out "Nonexistent label $label, skipping..."
+        continue
+    fi
+    if [[ ${#matches[@]} -gt 1 ]]; then
+        out "Multiple label $label, skipping..."
+        continue
+    fi
+    if [ -L "$target" ]; then
+        out "Preexisting linked label $label, replacing..."
+        rm "$target"
+    fi
+    if [ -f "$target" ]; then
+        out "Preexisting label $label, skipping..."
+        continue
+    fi
+
+    case "$SUBCOMMAND" in
+        link)
+            out "Linking template $label..."
+            ln -sf "$source" "$target"
+            ;;
+        copy)
+            out "Copying template $label..."
+            cp --remove-destination "$source" "$target"
+            ;;
+    esac
+done
+

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+copy() {
+    xclip -selection clipboard
+}
+
+usage() {
+    echo "Usage:"
+    echo "  stdin | clip"
+    echo "  clip clear"
+    echo "  clip last"
+    echo "  clip file <path>"
+    exit 1
+}
+
+case "${1:-}" in
+    "")
+        [[ ! -t 0 ]] || {
+            usage
+        }
+        copy
+        ;;
+    clear)
+        printf '' | copy
+        ;;
+    last)
+        [[ -f "$HOME/.bash_history" ]] || {
+            echo "[clip] ERROR: No history"
+            exit 1
+        }
+        tail -n 1 "$HOME/.bash_history" | copy
+        ;;
+    file)
+        [[ $# -eq 2 ]] || usage
+        cat -- "$2" | copy
+        ;;
+    *)
+        usage
+        ;;
+esac

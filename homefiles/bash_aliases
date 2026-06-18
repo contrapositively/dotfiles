@@ -1,0 +1,12 @@
+alias ls="ls --color=auto"
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+alias pc-sleep="systemctl suspend"
+
+alias pacman_clean="sudo pacman -Rsn $(pacman -Qdtq)"
+
+alias nvim_godot="nvim --listen /tmp/godothost"

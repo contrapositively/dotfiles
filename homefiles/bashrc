@@ -1,0 +1,11 @@
+if [ -e ~/.bash_aliases ]; then
+	. ~/.bash_aliases
+fi
+if [ -e ~/.bashrc_dotfiles ]; then
+	. ~/.bashrc_dotfiles
+fi
+
+export XDG_DATA_DIRS=$XDG_DATA_DIRS:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share
+export HISTFILESIZE=2000
+
+# startx -keeptty -- vt1

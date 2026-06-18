@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Print full paths of commands that exist
+# One per line, grep-style filtering behavior
+
+[[ $# -gt 0 ]] || {
+    echo "Usage:"
+    echo "  where <cmd> [cmd ...]"
+    exit 1
+}
+
+for cmd in "$@"; do
+    path="$(command -v "$cmd" 2>/dev/null || true)"
+    [[ -n "$path" ]] && echo "$path"
+done
