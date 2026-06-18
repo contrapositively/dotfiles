@@ -25,6 +25,8 @@ sudo pacman -S --needed --noconfirm \
 out "Configuring neovim..."
 config link nvim
 
+homefile link gitconfig
+
 out "Configuring ~/proj..."
 mkdir -p ~/proj/
 touch ~./proj/.gitconfig

@@ -2,9 +2,9 @@
 set -euo pipefail
 shopt -s nullglob
 
-: "${DOTFILES_CONFIG:?DOTFILES_CONFIG is not set}"
-CONFIG_DIR="$DOTFILES_CONFIG"
-INSTALL_DIR="$HOME/.config"
+: "${DOTFILES_HOMEFILES:?DOTFILES_HOMEFILES is not set}"
+HOMEFILES_DIR="$DOTFILES_HOMEFILES"
+INSTALL_DIR="$HOME"
 
 
 out() {
@@ -13,10 +13,10 @@ out() {
 
 usage() {
     echo "Usage:"
-    echo "  config path"
-    echo "  config list"
-    echo "  config link [--dir DIR] <label> [label ...]"
-    echo "  config copy [--dir DIR] <label> [label ...]"
+    echo "  homefile path"
+    echo "  homefile list"
+    echo "  homefile link [--dir DIR] <label> [label ...]"
+    echo "  homefile copy [--dir DIR] <label> [label ...]"
     exit 1
 }
 
@@ -32,13 +32,13 @@ esac
 
 # --- path ---
 if [[ "$SUBCOMMAND" == "path" ]]; then
-    echo "$CONFIG_DIR"
+    echo "$HOMEFILES_DIR"
     exit 0
 fi
 
 # --- list ---
 if [[ "$SUBCOMMAND" == "list" ]]; then
-    for file in "$CONFIG_DIR"/*; do
+    for file in "$HOMEFILES_DIR"/*; do
         basename "$file"
     done
     exit 0
@@ -66,7 +66,7 @@ done
 mkdir -p "$INSTALL_DIR"
 
 for label in "${LABELS[@]}"; do
-    source_dir="$CONFIG_DIR/$label"
+    source_dir="$HOMEFILES_DIR/$label"
 
     if [[ ! -e "$source_dir" ]]; then
         continue
@@ -76,7 +76,7 @@ for label in "${LABELS[@]}"; do
         [[ -e "$file" ]] || continue
         name="$(basename "$file")"
         source="$source_dir/$name"
-        target="$INSTALL_DIR/$name"
+        target="$INSTALL_DIR/.$name"
         case "$SUBCOMMAND" in
             link)
                 ln -sfn "$source" "$target"
@@ -88,3 +88,4 @@ for label in "${LABELS[@]}"; do
     done
     out "$label"
 done
+

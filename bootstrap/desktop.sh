@@ -10,8 +10,11 @@ sudo pacman -S --needed --noconfirm \
     picom \
     konsole \
     polybar \
-    pavucontrol
+    pavucontrol \
+    firefox \
+    rofi
 
 out "Desktop stack installed successfully (i3 + picom + konsole)"
 
-config link i3 picom konsole polybar pavucontrol
+config link i3 picom konsole polybar pavucontrol rofi
+homefile link xinitrc

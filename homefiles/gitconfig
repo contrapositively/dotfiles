@@ -1,12 +1,30 @@
-[includeIf "gitdir:~/proj/"]
-    path = ~/proj/.gitconfig
+[core]
+    editor = "nvim"
 [init]
-	defaultBranch = main
+	defaultBranch = "main"
 [alias]
     cm = commit -m
+    ca = commit -a
     cam = commit -am
     d = diff
     s = status -s
     co = checkout
     cob = checkout -b
+# Checkout last branch
+    colbr = checkout -
+# Pretty commit history
     l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+# Fancy branch list
+    b = !git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'
+# Forced pull
+    pullf = !sh -c \"git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)\"
+# History
+    hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+# Check for merge conflicts
+    mergetest = "!f(){ git merge --no-commit --no-ff \"$1\"; git merge --abort; echo \"Merge aborted\"; };f "
+# Fuzzy checkout, find branch that contains 1 or 2 terms
+#    fc = "!f() { git branch -a | grep -m1 -e ${1}.*${2} | sed \"s/remotes\\/origin\\///\" | xargs git checkout; }; f"
+[includeIf "gitdir:~/proj/"]
+    path = "~/proj/.gitconfig"
+[includeIf "gitdir:~/.config/"]
+    path = "~/.config/.gitconfig"
