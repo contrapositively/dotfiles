@@ -13,7 +13,7 @@ fi
 cat > "$HOME/.bashrc_dotfiles" <<EOF
 export DOTFILES="$DOTFILES"
 export DOTFILES_SCRIPTS="\$DOTFILES/scripts"
-export DOTFILES_CONFIG="\$DOTFILES/config"
+export DOTFILES_CONFIG="\$DOTFILES/configs"
 export DOTFILES_TEMPLATES="\$DOTFILES/templates"
 export DOTFILES_HOMEFILES="\$DOTFILES/homefiles"
 EOF
