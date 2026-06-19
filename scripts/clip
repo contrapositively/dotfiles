@@ -16,9 +16,7 @@ usage() {
 
 case "${1:-}" in
     "")
-        [[ ! -t 0 ]] || {
-            usage
-        }
+        [[ ! -t 0 ]] || { usage; }
         copy
         ;;
     clear)
