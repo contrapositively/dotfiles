@@ -6,13 +6,13 @@ All scripts require internet connection.
 ## Directories
 `bootstrap` contains scripts that initialize various functionalities, detailed below.
 
-`homefiles` contains files, and the `scripts/homefile` script connects `% -> ~/.%`.
+`homefiles` contains directories of files, and the `scripts/homefile` script connects `% -> ~/.%`.
 
 `config` contains directories containing packages, and the `scripts/config` script connects `% -> ~/.config`.
 
 `scripts` contains bash scripts, and the `bootstrap/scripts.sh` script connects `% -> ~/.local/bin/%`.
 
-`file_templates` contains templates for files, and the `scripts/template` script connects `%.& -> ./&`.
+`file_templates` contains directories of templates for files, and the `scripts/template` script connects `%.& -> ./&`.
 
 ## Bootstrapping
 Run `bootstrap/homefiles.sh` and `bootstrap/scripts.sh` first, other scripts may depend on them.

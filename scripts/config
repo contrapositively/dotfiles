@@ -7,9 +7,6 @@ CONFIG_DIR="$DOTFILES_CONFIG"
 INSTALL_DIR="$HOME/.config"
 
 
-out() {
-    printf "[config] %s\n" "$1"
-}
 
 usage() {
     echo "Usage:"
@@ -43,6 +40,8 @@ if [[ "$SUBCOMMAND" == "list" ]]; then
     done
     exit 0
 fi
+
+out() { printf "[config-%s] %s\n" "$SUBCOMMAND" "$1"; }
 
 LABELS=()
 
