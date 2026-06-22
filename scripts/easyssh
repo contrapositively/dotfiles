@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+set -euo pipefail
+shopt -s nullglob
+
+out() { printf"[easyssh-%s] %s" "$2" "$1"; }
+
+SSH_DIR="${HOME}/.ssh"
+
+is_private_key() {
+    local file="$1"
+    if [[ -e "$file".pub ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+list_keys() {
+    find "$SSH_DIR" -type f | while read -r file; do
+        if is_private_key "$file"; then
+            echo "$(basename $file)"
+        fi
+    done
+}
+
+add_key() {
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: easyssh add <keywords...>"
+        exit 1
+    fi
+
+    mapfile -t keys < <(list_keys)
+
+    matches=()
+
+    for key in "${keys[@]}"; do
+        name=$(basename "$key")
+
+        match=true
+        for kw in "$@"; do
+            if [[ "$name" != *"$kw"* ]]; then
+                match=false
+                break
+            fi
+        done
+
+        $match && matches+=("$key")
+    done
+
+    if [[ ${#matches[@]} -eq 0 ]]; then
+        out "No SSH key matched: $*" "add"
+        exit 1
+    fi
+
+    newest=$(
+        ls -t "${matches[@]}" | head -n1
+    )
+
+    out "$newest" "add"
+    ssh-add "$newest"
+}
+
+start_agent() {
+    ssh-add -l >/dev/null 2>&1 && {
+        out "Agent already running" "start"
+        return
+    }
+    out 'RUN: eval "$(ssh-agent -s)"' "start"
+}
+
+case "${1:-}" in
+    list)
+        list_keys
+        ;;
+    start)
+        start_agent
+        ;;
+    add)
+        shift
+        add_key "$@"
+        ;;
+    *)
+        cat <<EOF
+Usage:
+  easyssh list
+  easyssh start
+  easyssh add <keywords...>
+EOF
+        exit 1
+        ;;
+esac
+
