@@ -22,6 +22,8 @@
     pullf = !sh -c \"git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)\"
 # Check for merge conflicts
     mergetest = "!f(){ git merge --no-commit --no-ff \"$1\"; git merge --abort; echo \"Merge aborted\"; };f "
+# Last commit in detail
+    last = log -1 HEAD --stat
 # Fuzzy checkout, find branch that contains 1 or 2 terms
 #    fc = "!f() { git branch -a | grep -m1 -e ${1}.*${2} | sed \"s/remotes\\/origin\\///\" | xargs git checkout; }; f"
 [includeIf "gitdir:~/proj/"]
