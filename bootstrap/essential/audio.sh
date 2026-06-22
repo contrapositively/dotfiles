@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-out() { echo "[bootstrap/audio] $1"; }
+out() { echo "[essential/audio] $1"; }
 
 if ! command -v pactl >/dev/null 2>&1; then
     out "PipeWire audio stack not found. Installing..."

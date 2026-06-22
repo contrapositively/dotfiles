@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-out() { echo "[bootstrap/devtools] $1"; }
+out() { echo "[development/neovim] $1"; }
 
 out "Installing LSPs..."
 sudo pacman -S --needed --noconfirm \

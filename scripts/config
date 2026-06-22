@@ -3,7 +3,7 @@ set -euo pipefail
 shopt -s nullglob
 
 : "${DOTFILES_CONFIG:?DOTFILES_CONFIG is not set}"
-CONFIG_DIR="$DOTFILES_CONFIG"
+CONFIG_DIR="$DOTFILES_CONFIGS"
 INSTALL_DIR="$HOME/.config"
 
 

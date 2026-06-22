@@ -3,7 +3,7 @@ set -euo pipefail
 
 : "${DOTFILES:?DOTFILES is not set}"
 
-out() { printf "[bootstrap/scripts] %s\n" "$1"; }
+out() { printf "[essential/scripts] %s\n" "$1"; }
 
 BIN_DIR="$HOME/.local/bin"
 mkdir -p "$BIN_DIR"

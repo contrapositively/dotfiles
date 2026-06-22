@@ -11,5 +11,5 @@
   "nvim-autopairs": { "branch": "master", "commit": "7b9923abad60b903ece7c52940e1321d39eccc79" },
   "nvim-cmp": { "branch": "main", "commit": "a1d504892f2bc56c2e79b65c6faded2fd21f3eca" },
   "nvim-treesitter": { "branch": "main", "commit": "4916d6592ede8c07973490d9322f187e07dfefac" },
-  "vimtex": { "branch": "master", "commit": "fedb7ffc1bebf254cc74e7419c3a5930b6719065" }
+  "vimtex": { "branch": "master", "commit": "df8892993c1df79b96c2d237c8a0cbcbf72131da" }
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-out() { echo "[bootstrap/drivers] $1"; }
+out() { echo "[essential/drivers] $1"; }
 
 GPU_INFO="$(lspci | grep -E "VGA|3D|Display" || true)"
 

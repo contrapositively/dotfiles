@@ -41,7 +41,7 @@ if [[ "$SUBCOMMAND" == "list" ]]; then
     exit 0
 fi
 
-out() { printf "[config-%s] %s\n" "$SUBCOMMAND" "$1"; }
+out() { printf "[homefile-%s] %s\n" "$SUBCOMMAND" "$1"; }
 
 LABELS=()
 

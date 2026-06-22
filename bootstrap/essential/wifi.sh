@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-out() { echo "[bootstrap/wifi] $1"; }
+out() { echo "[essential/wifi] $1"; }
 
 
 command -v nmcli >/dev/null 2>&1 || {

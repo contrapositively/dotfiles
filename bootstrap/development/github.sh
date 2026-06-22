@@ -3,7 +3,7 @@
 set -e
 
 out() {
-    printf "[bootstrap/github-ssh] %s\n" "$1"
+    printf "[development/github-ssh] %s\n" "$1"
 }
 
 read -p "GitHub username: " GITHUB_USER
