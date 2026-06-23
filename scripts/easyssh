@@ -2,9 +2,19 @@
 set -euo pipefail
 shopt -s nullglob
 
-out() { printf"[easyssh-%s] %s" "$2" "$1"; }
+out() { printf "[easyssh-%s] %s\n" "$2" "$1"; }
 
 SSH_DIR="${HOME}/.ssh"
+
+usage() {
+    cat <<EOF
+Usage:
+  easyssh list
+  easyssh start
+  easyssh add <keywords...>
+EOF
+exit 1
+}
 
 is_private_key() {
     local file="$1"
@@ -17,10 +27,10 @@ is_private_key() {
 
 list_keys() {
     find "$SSH_DIR" -type f | while read -r file; do
-        if is_private_key "$file"; then
-            echo "$(basename $file)"
-        fi
-    done
+    if is_private_key "$file"; then
+        echo "$(basename $file)"
+    fi
+done
 }
 
 add_key() {
@@ -53,19 +63,20 @@ add_key() {
     fi
 
     newest=$(
-        ls -t "${matches[@]}" | head -n1
+        ls -t "$SSH_DIR/${matches[@]}" | head -n1
     )
 
-    out "$newest" "add"
+    out "$(basename $newest)" "add"
     ssh-add "$newest"
 }
 
 start_agent() {
     ssh-add -l >/dev/null 2>&1 && {
         out "Agent already running" "start"
-        return
+            return
     }
-    out 'RUN: eval "$(ssh-agent -s)"' "start"
+# out 'RUN: eval "$(ssh-agent -s)"' "start"
+echo 'eval "$(ssh-agent -s)"'
 }
 
 case "${1:-}" in
@@ -80,13 +91,7 @@ case "${1:-}" in
         add_key "$@"
         ;;
     *)
-        cat <<EOF
-Usage:
-  easyssh list
-  easyssh start
-  easyssh add <keywords...>
-EOF
-        exit 1
+        usage
         ;;
 esac
 
