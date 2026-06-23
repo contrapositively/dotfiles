@@ -37,6 +37,7 @@ vim.keymap.set("n", "<leader>ss", ":%s/\\<<C-r><C-w>\\>//gI<Left><Left><Left>")
 
 -- Indent and write current buffer
 vim.keymap.set("n", "<leader>id", ":normal gg=G:w<CR>``")
+vim.keymap.set("n", "<leader>w", ":w<CR>``")
 
 -- Select entire buffer
 vim.keymap.set("n", "<leader>vvV", "ggVG")
