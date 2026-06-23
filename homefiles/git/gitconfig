@@ -5,27 +5,33 @@
 [commit]
     template = "~/.gitcommit"
 [alias]
-    cm = commit -m
-    ca = commit -a
-    cam = commit -am
-    d = diff
-    s = status -s
-    co = checkout
-    cob = checkout -b
-# Checkout last branch
-    colbr = checkout -
 # Pretty commit history
     l = log --pretty=format:'%C(yellow)%h %ad%C(reset)%C(red)%d%C(reset) %s %C(blue)[%an]%C(reset)' --graph --date=short
 # Fancy branch list
     b = !git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'
-# Forced pull
-    pullf = !sh -c \"git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)\"
-# Check for merge conflicts
-    mergetest = "!f(){ git merge --no-commit --no-ff \"$1\"; git merge --abort; echo \"Merge aborted\"; };f "
+## Abbr
+    ad = add
+    co = checkout
+    st = status
+    gr = grep
+    df = diff
+    cm = commit
+    br = branch
+    sw = switch
+    sa = stash
+    rb = rebase
+    me = merge
+## Workflow
+    ada = add --all                                                                  # Update all tracked files
+    wip = '!f() { git stash push --include-untracked && git stash branch "$1"; }; f' # New branch with current changes
+    rbi = rebase --interactive                                                       # Prune the commit history
+    meq = merge --squash                                                             # Merge, squashing all replayed commits and staging them
+    dflast = diff --cached HEAD                                                      # Diff staged changes with the last commit
+    cma = commit --amend --no-edit                                                   # Fold current changes into the last commit
+## Staging
+    unstage = reset HEAD --
 # Last commit in detail
     last = log -1 HEAD --stat
-# Fuzzy checkout, find branch that contains 1 or 2 terms
-#    fc = "!f() { git branch -a | grep -m1 -e ${1}.*${2} | sed \"s/remotes\\/origin\\///\" | xargs git checkout; }; f"
 [includeIf "gitdir:~/proj/"]
     path = "~/proj/.gitconfig"
 [includeIf "gitdir:~/.config/"]
