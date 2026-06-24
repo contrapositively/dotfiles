@@ -9,7 +9,7 @@ BIN_DIR="$HOME/.local/bin"
 mkdir -p "$BIN_DIR"
 
 # enable scripts
-for file in "$DOTFILES_SCRIPTS"/*; do
+for file in "$DOTFILES"/scripts/*; do
     [[ -e "$file" ]] || continue
     if [[ -f "$file" ]]; then
         name="$(basename "$file")"

@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
-shopt -s nullglob
+shopt -s dotglob
 
-: "${DOTFILES_TEMPLATES:?DOTFILES_TEMPLATES is not set}"
-TEMPLATE_DIR="$DOTFILES_TEMPLATES"
+TEMPLATE_DIR="$DOTFILES/templates"
 INSTALL_DIR="$PWD"
-
-
 
 usage() {
     echo "Usage:"
@@ -74,6 +71,7 @@ for label in "${LABELS[@]}"; do
         name="$(basename "$file")"
         source="$source_dir/$name"
         target="$INSTALL_DIR/$name"
+        out "$label: $(basename $file)"
         case "$SUBCOMMAND" in
             link)
                 ln -sfn "$source" "$target"
@@ -83,5 +81,4 @@ for label in "${LABELS[@]}"; do
                 ;;
         esac
     done
-    out "$label"
 done
