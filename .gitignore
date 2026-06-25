@@ -1,4 +1,4 @@
 *TEST*
 
-nvim/lazy-lock.json
-nvim/lazyvim.json
+lazy-lock.json
+lazyvim.json
