@@ -46,6 +46,7 @@
     co = checkout
     sw = switch
     swc = switch --create                                                                  # Create a new branch
+    swkw = "!f() { git branch | grep $@ | xargs git switch; }; f"                          # Switch to a branch with keywords
 
     sm = submodule
     smst = submodule status
