@@ -60,7 +60,7 @@ vim.keymap.set("n", "<leader>zsc", ":ZipSpaces<CR>", { desc = "Join consecutive 
 -- Align
 vim.api.nvim_create_user_command("Align", function(opts)
     local patterns = opts.fargs
-    if #patterns == 0 then patterns = { "=", ".", "(", "->", ":=", "?=" } end
+    if #patterns == 0 then patterns = { "=", ".", "(", "->", ":=", "?=", "--", "#", "//" } end
     local start    = vim.fn.line("'<") - 1
     local finish   = vim.fn.line("'>") - 1
     local lines    = vim.api.nvim_buf_get_lines(0, start, finish + 1, false)

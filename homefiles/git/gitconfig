@@ -4,6 +4,16 @@
 	defaultBranch = "main"
 [commit]
     template = "~/.gitcommit"
+[includeIf "gitdir:~/proj/"]
+    path = "~/proj/.gitconfig"
+[includeIf "gitdir:~/.config/"]
+    path = "~/.config/.gitconfig"
+[difftool]
+    prompt = false
+[diff]
+    tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [alias]
     l = log --pretty=format:'%C(yellow)%h %ad%C(reset)%C(red)%d%C(reset) %s %C(blue)[%an]%C(reset)' --graph --date=short
     b = branch --format='%(color:yellow)%(committerdate:relative)%(color:reset) %(color:red)%(upstream:short): %(refname:short)%(color:reset) %(contents:subject) %(color:blue)[%(authorname)]%(color:reset)'
@@ -14,6 +24,8 @@
     adp = add --patch                                                                      # Update all tracked files
 
     df = diff
+    dftl = difftool
+    dftls = difftool --staged HEAD
     dfs = diff --staged HEAD                                                               # Diff staged changes with the last commit
 
     cm = commit
@@ -64,8 +76,3 @@
     ro = remote
     st = status
     gr = grep
-
-[includeIf "gitdir:~/proj/"]
-    path = "~/proj/.gitconfig"
-[includeIf "gitdir:~/.config/"]
-    path = "~/.config/.gitconfig"
