@@ -1,8 +1,13 @@
 local ts = require("nvim-treesitter")
 ts.install {
-    "cpp", "c",
-    "python",
+    "make", "bash", "desktop", "diff",
+    "gitcommit", "gitignore", "git_config", "git_rebase",
+    "printf",
+    "cpp", "c", "asm",
     "latex",
-    "go",
-    "gdscript",
+    "python",
+    -- "go",
+    -- "gdscript", "gdshader",
+    "lua", "vim", "vimdoc",
+    -- "html", "css", "javascript", "typescript",
 }
